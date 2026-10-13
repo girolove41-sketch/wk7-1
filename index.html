@@ -1,0 +1,477 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>My Picture Dictionary</title>
+
+<style>
+:root {
+  --green: #28634a;
+  --light-green: #eaf4ec;
+  --cream: #fffaf0;
+  --text: #203047;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #f4f6f2;
+  color: var(--text);
+  font-family: Arial, "Malgun Gothic", sans-serif;
+}
+
+main {
+  max-width: 900px;
+  margin: auto;
+  padding: 20px;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+h1 {
+  color: var(--green);
+  margin-bottom: 5px;
+}
+
+header p {
+  color: #617267;
+}
+
+.tag {
+  background: white;
+  border: 1px solid #dce5dc;
+  border-radius: 20px;
+  padding: 9px 13px;
+}
+
+.scene {
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+  background: #e8e1d5;
+}
+
+.scene img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.hotspot {
+  position: absolute;
+  left: 2%;
+  top: 3%;
+  width: 16%;
+  height: 37%;
+  border: 3px solid #f5b74e;
+  background: #f5b74e25;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.hotspot:hover,
+.hotspot:focus-visible {
+  background: #f5b74e70;
+  outline: 3px solid white;
+}
+
+.hint {
+  color: #617267;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.panel {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 24px;
+  align-items: center;
+  background: white;
+  border: 1px solid #dce5dc;
+  border-radius: 18px;
+  padding: 22px;
+  margin-top: 20px;
+}
+
+.object-image {
+  min-height: 220px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--cream);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.object-image img {
+  width: 100%;
+  max-height: 280px;
+  object-fit: contain;
+}
+
+.eyebrow {
+  color: #728176;
+  font-size: 13px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.word {
+  color: #173d2b;
+  font-size: clamp(28px, 5vw, 44px);
+  overflow-wrap: anywhere;
+  margin: 12px 0;
+}
+
+.meaning {
+  font-size: 22px;
+  margin: 10px 0;
+}
+
+.pronunciation {
+  color: #617267;
+  line-height: 1.6;
+}
+
+button {
+  font: inherit;
+  font-weight: bold;
+  padding: 12px 15px;
+  margin: 4px 3px 4px 0;
+  border: 0;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+button:focus-visible {
+  outline: 3px solid #e5a640;
+  outline-offset: 2px;
+}
+
+.primary {
+  color: white;
+  background: var(--green);
+}
+
+.secondary {
+  color: #234d37;
+  background: var(--light-green);
+}
+
+.quiz {
+  margin-top: 20px;
+  padding: 22px;
+  background: white;
+  border: 1px solid #dce5dc;
+  border-radius: 18px;
+}
+
+.quiz h2 {
+  margin-top: 0;
+}
+
+.choices {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.choice {
+  width: 100%;
+  margin: 0;
+  text-align: left;
+  background: #f5f7f3;
+  border: 1px solid #dce5dc;
+}
+
+.choice.correct {
+  background: #dff3e4;
+  border: 2px solid #348354;
+}
+
+.choice.wrong {
+  background: #fff0e8;
+  border: 2px solid #d77846;
+}
+
+.feedback {
+  min-height: 30px;
+  margin-top: 14px;
+  font-weight: bold;
+  line-height: 1.5;
+}
+
+.progress {
+  height: 8px;
+  background: #e8eee8;
+  border-radius: 20px;
+  overflow: hidden;
+  margin: 12px 0;
+}
+
+.bar {
+  height: 100%;
+  width: 0;
+  background: #4c9a68;
+  transition: width 0.2s;
+}
+
+.image-error {
+  display: none;
+  background: #fff0e8;
+  color: #8a3d20;
+  border: 1px solid #e5b8a4;
+  border-radius: 10px;
+  padding: 12px;
+  margin-top: 12px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+footer {
+  text-align: center;
+  padding: 20px 0;
+  color: #718075;
+  font-size: 13px;
+}
+
+@media (max-width: 600px) {
+  main {
+    padding: 12px;
+  }
+
+  .panel {
+    grid-template-columns: 1fr;
+    padding: 16px;
+    gap: 15px;
+  }
+
+  .object-image {
+    min-height: 170px;
+  }
+
+  .object-image img {
+    max-height: 210px;
+  }
+
+  .hotspot {
+    border-width: 2px;
+  }
+
+  .choices {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+</style>
+</head>
+
+<body>
+<main>
+  <header>
+    <div>
+      <h1>My Picture Dictionary</h1>
+      <p>그림을 누르고, 듣고, 기억해 보세요!</p>
+    </div>
+    <span class="tag">🏠 HOME · 01</span>
+  </header>
+
+  <section aria-label="집 전체 그림">
+    <div class="scene">
+      <img
+        id="houseImage"
+        src="assets/house.png"
+        alt="주방과 거실이 있는 집 전체 그림"
+      >
+      <button
+        class="hotspot"
+        type="button"
+        onclick="showCard()"
+        aria-label="냉장고 선택하기"
+        title="냉장고를 눌러 보세요"
+      ></button>
+    </div>
+
+    <p class="hint">
+      💡 노란 테두리 안을 눌러 냉장고 단어를 학습하세요.
+    </p>
+    <div id="imageError" class="image-error" role="alert"></div>
+  </section>
+
+  <section class="panel" id="wordCard">
+    <div class="object-image">
+      <img
+        id="fridgeImage"
+        src="assets/fridge.png"
+        alt="냉장고 그림"
+      >
+    </div>
+
+    <div>
+      <div class="eyebrow">TODAY'S WORD · NOUN</div>
+      <h2 class="word" id="word">refrigerator</h2>
+      <p class="meaning" id="meaning">냉장고</p>
+      <p class="pronunciation" id="pronunciation">
+        스피커 버튼을 눌러 영어 발음을 들어 보세요.
+      </p>
+
+      <button class="primary" type="button" onclick="speakWord()">
+        🔊 발음 듣기
+      </button>
+
+      <button class="secondary" type="button" onclick="showSpelling()">
+        🔤 철자 확인
+      </button>
+
+      <button class="secondary" type="button" onclick="toggleMeaning()">
+        뜻 가리기
+      </button>
+    </div>
+  </section>
+
+  <section class="quiz">
+    <h2>🧠 기억했나요?</h2>
+    <p>‘냉장고’를 뜻하는 영어 단어를 선택하세요.</p>
+
+    <div class="choices">
+      <button class="choice" type="button"
+        onclick="answer(this, false)">microwave</button>
+      <button class="choice" type="button"
+        onclick="answer(this, true)">refrigerator</button>
+      <button class="choice" type="button"
+        onclick="answer(this, false)">dishwasher</button>
+      <button class="choice" type="button"
+        onclick="answer(this, false)">cupboard</button>
+    </div>
+
+    <div class="feedback" id="feedback" role="status"
+      aria-live="polite"></div>
+
+    <div class="progress" aria-label="퀴즈 진행 상황">
+      <div class="bar" id="bar"></div>
+    </div>
+
+    <button class="secondary" type="button" onclick="resetQuiz()">
+      다시 도전하기
+    </button>
+  </section>
+
+  <footer>
+    My Picture Dictionary · Refrigerator Practice
+  </footer>
+</main>
+
+<script>
+"use strict";
+
+let meaningVisible = true;
+let answered = false;
+
+function showCard() {
+  document.getElementById("wordCard").scrollIntoView({
+    behavior: "smooth",
+    block: "center"
+  });
+}
+
+function speakWord() {
+  const feedback = document.getElementById("feedback");
+
+  if (!("speechSynthesis" in window)) {
+    feedback.textContent =
+      "이 브라우저는 음성 재생을 지원하지 않습니다.";
+    return;
+  }
+
+  window.speechSynthesis.cancel();
+
+  const utterance = new SpeechSynthesisUtterance("refrigerator");
+  utterance.lang = "en-US";
+  utterance.rate = 0.8;
+  utterance.pitch = 1;
+
+  window.speechSynthesis.speak(utterance);
+}
+
+function showSpelling() {
+  document.getElementById("pronunciation").textContent =
+    "철자: R · E · F · R · I · G · E · R · A · T · O · R";
+}
+
+function toggleMeaning() {
+  meaningVisible = !meaningVisible;
+
+  document.getElementById("meaning").textContent =
+    meaningVisible ? "냉장고" : "뜻을 떠올려 보세요!";
+}
+
+function answer(button, correct) {
+  if (answered) return;
+  answered = true;
+
+  const choices = document.querySelectorAll(".choice");
+
+  choices.forEach(function(item) {
+    item.disabled = true;
+
+    if (item.textContent.trim() === "refrigerator") {
+      item.classList.add("correct");
+    }
+  });
+
+  if (!correct) {
+    button.classList.add("wrong");
+  }
+
+  document.getElementById("feedback").textContent = correct
+    ? "정답이에요! refrigerator = 냉장고 🎉"
+    : "다시 기억해 보세요. 정답은 refrigerator입니다.";
+
+  document.getElementById("bar").style.width = "100%";
+
+  if (correct) speakWord();
+}
+
+function resetQuiz() {
+  answered = false;
+
+  document.querySelectorAll(".choice").forEach(function(button) {
+    button.disabled = false;
+    button.classList.remove("correct", "wrong");
+  });
+
+  document.getElementById("feedback").textContent = "";
+  document.getElementById("bar").style.width = "0";
+}
+
+function checkImage(id, path) {
+  const img = document.getElementById(id);
+
+  img.addEventListener("error", function() {
+    const box = document.getElementById("imageError");
+    box.style.display = "block";
+    box.textContent =
+      "이미지를 불러오지 못했습니다: " + path +
+      " — 파일 이름과 assets 폴더 위치를 확인하세요.";
+  });
+
+  img.addEventListener("load", function() {
+    img.dataset.loaded = "true";
+  });
+}
+
+checkImage("houseImage", "assets/house.png");
+checkImage("fridgeImage", "assets/fridge.png");
+</script>
+</body>
+</html>
